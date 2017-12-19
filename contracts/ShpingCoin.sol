@@ -7,7 +7,7 @@ contract ShpingCoin {
     }
 
     string public name = "Shping Coin"; 
-    string public symbol = "SHC";
+    string public symbol = "SHPING";
     uint8 public decimals = 18;
     uint public coinsaleDeadline = 1521845940; // 23/03/2018, 22:59:00 GMT | 23/03/2018, 23:59:00 CET | Saturday, 24 March 2018 9:59:00 AM GMT+11:00
 
