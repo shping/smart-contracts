@@ -67,7 +67,7 @@ contract ShpingCoin {
         require(budget != 0);
         require(balances[msg.sender] - budgets[msg.sender] >= budget);
         campaigns[msg.sender][campaign] = budget;
-        Activate(msg.sender, campaign, budget);
+        Activate(msg.sender, campaign);
         return true;
     }
 
@@ -103,7 +103,7 @@ contract ShpingCoin {
         return true;
     }
 
-    event Activate(address indexed account, string indexed campaign, uint256 budget);
+    event Activate(address indexed account, string campaign);
     event Released(address indexed account, uint256 value);
 
     //ERC20 interface
