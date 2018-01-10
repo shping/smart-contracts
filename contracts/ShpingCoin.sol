@@ -15,7 +15,7 @@ contract ShpingCoin {
     mapping(address => uint256) balances;
     mapping(address => mapping (address => uint256)) allowed;
 
-    mapping(address => PlatinumStruct) platinum_users;
+    mapping(address => mapping(string => PlatinumStruct)) platinum_users;
     mapping(address => mapping(string => uint256)) campaigns; // Requests for a campaign activation 
     mapping(address => uint256) budgets; // Account budget for rewards campaigns
 
@@ -51,13 +51,13 @@ contract ShpingCoin {
 
     //Permanent platinum level
 
-    function isPlatinumLevel(address user) public constant returns (bool) {
-        return platinum_users[user].isPlatinum;
+    function isPlatinumLevel(address user, string hashedID) public constant returns (bool) {
+        return platinum_users[user][hashedID].isPlatinum;
     }
 
-    function setPermanentPlatinumLevel(address user) public onlyOwner returns (bool) {
-        require(!isPlatinumLevel(user));
-        platinum_users[user].isPlatinum = true;
+    function setPermanentPlatinumLevel(address user, string hashedID) public onlyOwner returns (bool) {
+        require(!isPlatinumLevel(user, hashedID));
+        platinum_users[user][hashedID].isPlatinum = true;
         return true;
     }
 
