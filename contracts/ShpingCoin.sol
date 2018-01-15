@@ -67,12 +67,19 @@ contract ShpingCoin {
         require(budget != 0);
         require(balances[msg.sender] - budgets[msg.sender] >= budget);
         campaigns[msg.sender][campaign] = budget;
-        Activate(msg.sender, campaign);
+        Activate(msg.sender, budget, campaign);
         return true;
     }
 
     function getBudget(address account) public constant returns (uint256) {
         return budgets[account];
+    }
+
+    function rejectCampaign(address account, string campaign) public onlyOperator returns (bool) {
+        require(account != address(0));
+        campaigns[account][campaign] = 0;
+        Reject(account, campaign);
+        return true;
     }
 
     function setBudget(address account, string campaign) public onlyOperator returns (bool) {
@@ -103,7 +110,8 @@ contract ShpingCoin {
         return true;
     }
 
-    event Activate(address indexed account, string campaign);
+    event Activate(address indexed account, uint256 indexed budget, string campaign);
+    event Reject(address indexed account, string campaign);
     event Released(address indexed account, uint256 value);
 
     //ERC20 interface
