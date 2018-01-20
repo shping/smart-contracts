@@ -15,16 +15,17 @@ The contract is started with the following initial values and implements an ERC2
 string public name = "Shping Coin"; 
 string public symbol = "SHPING";
 uint8 public decimals = 18;
-uint public coinsaleDeadline = 1521845940;
+uint256 public coinsaleDeadline = 1521845940;
 
 function ShpingCoin() public {
     owner = msg.sender;
-    _totalSupply = 10000000000 * 10 ** uint256(decimals);
-    balances[msg.sender] = _totalSupply;
+    totalSupply = 10000000000 * 10 ** uint256(decimals);
+    balances[msg.sender] = totalSupply;
     operator = msg.sender;
 }
 
-function totalSupply() public constant returns (uint256);
+uint256 public totalSupply;
+
 function balanceOf(address account) public constant returns (uint256);
 function transfer(address to, uint256 value) public returns (bool);
 function transferFrom(address from, address to, uint256 value) public returns (bool);
@@ -52,11 +53,8 @@ As a result, only "Owner" or "Operator" has permission to transfer coins until t
 Additionally, the owner can reward any user with a permanent platinum level in the Shping mobile app.
 
 ```javascript
-struct PlatinumStruct {
-    bool isPlatinum;
-}
 
-mapping(address => mapping(string => PlatinumStruct)) platinum_users;
+mapping(address => mapping(string => bool)) platinumUsers;
 
 function changeOperator(address newOperator) public onlyOwner;
 function isPlatinumLevel(address user, string hashedID) public constant returns (bool);
@@ -71,6 +69,7 @@ The next part of the contract is methods for working with rewards campaigns. Bra
 ```javascript
 function activateCampaign(string campaign, uint256 budget) public returns (bool);
 function getBudget(address account) public constant returns (uint256);
+function rejectCampaign(address account, string campaign) public onlyOperator returns (bool);
 function setBudget(address account, string campaign) public onlyOperator returns(bool);
 event Activate(address indexed account, string campaign);
 ```
@@ -80,6 +79,8 @@ Periodically (every month) the operator releases budgets, and transfers coins to
 function releaseBudget(address account, uint256 budget) public onlyOperator returns (bool);
 function clearBudget(address account) public onlyOperator returns (bool);
 event Released(address indexed account, uint256 value);
+event NewBudget(address indexed account, uint256 budget);
+event Reject(address indexed account, string campaign);
 ```
 
 ### Users coins
